@@ -1,0 +1,14 @@
+{
+    "categories": [
+      { "id": "SouthSea", "name": "南海" },
+      { "id": "EastSea", "name": "東海" },
+      { "id": "NorthSea", "name": "北海" },
+      { "id": "SeaFarm", "name": "海牧夜釣" },
+      { "id": "BBQ", "name": "BBQ" },
+      { "id": "SouthPH", "name": "鎖港山水" },
+      { "id": "WaterActivity", "name": "水上活動" },
+      { "id": "CityMotor", "name": "市區車行" },
+      { "id": "AirportMotor", "name": "機場車行" },
+      { "id": "Other", "name": "其他" }
+    ]
+}

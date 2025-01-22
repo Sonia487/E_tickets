@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>E-ticket</title>
+	<!--Local加入CSS檔案，注意路徑寫法-->
+	<link rel="stylesheet" href="css\bootstrap.min.css">
+	<link rel="stylesheet" href="css\style.css">
+	<!--Local加入JS檔案，注意路徑寫法-->
+	<script defer src="js/javascript.js"></script>
+	<script defer src="js/html2canvas.js"></script>
+    <script defer src="js/dropdownmenu.js"></script>
+    <script defer src="js/submit.js"></script>
+    <script defer src="js/submit2ticket.js"></script>
+    <script defer type="module" src="js/copy_pic.js"></script>
+    <script defer src="js/dom-to-image.js"></script>
+</head>
+
+<body>
+	
+	<div class="container px-4 bg-light">
+	<!--大標題 container網格容器 排版用包含(px,gx,p,col...)/-->
+		<h1 class="p-3 mb-2 bg-primary text-white text-center">澎湖之美旅行社</h1>
+
+	<figure class="text-center">
+  <blockquote class="blockquote">
+    <p>票券生產器網頁版</p>
+  </blockquote>
+  <figcaption class="blockquote">
+  	<!-- 觸發彈出視窗，讓人可以輸入票券資料的按鈕，ID是run-->
+    <button class="btn btn-lg btn-danger fw-bold" id="run">點這粒開始製作</button>
+  </figcaption>
+</figure>
+
+<div id="myTable">
+    <img id="logo" src="src\logo.png" alt="Logo">
+	<div class="container px-4 " style="width: 450px; font-family:DFKai-sb;">
+		<table class=" border-dark table-bordered table table-sm table-responsive-sm" style="background-color: #fcf98e; padding-top: 50%; scale: 1;">
+			<tr class="col">
+				<td class="border-2 text-center" colspan="2" style="font-size: large;">澎湖之美旅行社-電子票券</td>
+			</tr>
+			<tr class="border-2 border-top-0 border-bottom-0">
+                <!--這個 style="width: 35%;" 可以調整直線位置-->
+				<td class="border-1" style="width: 32%;">旅客/電話</td>
+				<td class="border-1" id="client"></td>
+			</tr>
+			<tr class="border-2 border-top-0 border-bottom-0">
+				<td class="border-1">日期/行程/人數</td>
+				<td class="border-1" id="tour-detail"></td>
+			</tr>
+			<tr class="border-2 border-top-0 border-bottom-0">
+				<td class="border-1">報到/開始時間</td>
+				<td class="border-1" id="time"></td>
+			</tr>
+			<tr class="border-2 border-top-0 border-bottom-0">
+				<td class="border-1">行程業者</td>
+				<td class="border-1" id="t-provider"></td>
+			</tr>
+			<tr class="border-2 border-top-0 border-bottom-0">
+				<td class="border-1">報到地點</td>
+				<td class="border-1" id="checkin-add"></td>
+			</tr>
+			<tr class="border-2 border-top-0">
+				<td class="border-1">備註</td>
+				<td class="border-1" style="flex: 1;" id="ps"></td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+
+  		<div class="container px-6 text-center " style="width: 400px;">
+  		<div class="row justify-content-center gx-6">
+    		<div class="col">
+    			<div class="p-2">
+      			<button type="button" class="btn btn-primary" id="copy_pic">複製圖片</button>
+      		</div>
+    		</div>
+    		<div class="col">
+    			<div class="p-2">
+      			<button type="button" class="btn btn-primary" id="download_pic">下載圖片</button>
+      		</div>
+    		</div>
+    		<div class="col">
+    			<div class="p-2">
+      			<button type="button" class="btn btn-primary" id="share_pic">分享到~</button>
+      		</div>
+    		</div>
+  		</div>
+  		</div>
+
+  		<div class="container px-6 text-center " style="width: 400px;">
+  		<div class="row justify-content-center gx-6">
+    		<div class="col">
+    			<div class="p-2">
+      			<button type="button" class="btn btn-primary">歷史資料</button>
+      			</div>
+    		</div>
+    		<div class="col">
+    				<div class="p-2">
+      			<button type="button" class="btn btn-primary">批量製作</button>
+      			</div>
+    		</div>
+    		<div class="col">
+    			<div class="p-2">
+      			<button type="button" class="btn btn-primary">還在想~</button>
+      			</div>
+    		</div>
+  		</div>
+  		</div>
+
+  	</div>	
+
+	<!--測試寫法-->
+	<div id="result">
+         <!-- Result will appear be here -->
+	</div>
+	
+	<!-- 暗化背景，ID是overlay-->
+	<div id="overlay"></div>
+
+	 <!-- 隱藏的表單 -->
+	 <div id="form-container" class="form-container container-fluid gx-6">
+        <form id="data-form">
+            <table>
+                <tr>
+                    <td class="title">日期</td>
+                    <td><input type="date" id="date" required></td>
+                </tr>
+                <tr>
+                    <td class="title">類別</td>
+                    <td>
+                        <select id="category" name="category" required>
+                            <option value="">請選擇</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title">業者</td>
+                    <td>
+                        <select id="provider" name="provider" required>
+                            <option value="">請選擇</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title">行程</td>
+                    <td>
+                        <select id="tour" name="tour" required>
+                            <option value="">請選擇</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title">開始時間</td>
+                    <td>
+                        <div class="inline-inputs">
+                            <input type="number" id="start-hour" min="0" max="23" placeholder="時"> :
+                            <input type="number" id="start-minute" min="0" max="59" placeholder="分">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title">報到時間</td>
+                    <td><input type="number" id="checkin-time" min="0" placeholder="分鐘 / 時間有一格沒輸入就不會顯示"></td>
+                </tr>
+                <tr>
+                    <td class="title">團號</td>
+                    <td><input type="text" id="group-number" placeholder="非必要"></td>
+                </tr>
+                <tr>
+                    <td class="title">旅客</td>
+                    <td><input type="text" id="name-phone" placeholder="姓名+電話 (必填)" required></td>
+                </tr>
+                <tr>
+                    <td class="title">人數</td>
+                    <td>
+                        <div class="inline-inputs">
+                            <input type="number" id="adults" placeholder="大人" min="0">
+                            <input type="number" id="children" placeholder="小孩" min="0">
+                            <input type="number" id="infants" placeholder="抱" min="0">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title">活動</td>
+                    <td>
+                        <div class="inline-inputs">
+                            <input type="number" id="snorkel" placeholder="浮潛" min="0">
+                            <input type="number" id="canoe" placeholder="獨木舟" min="0">
+                            <input type="number" id="freestyle" placeholder="自由行" min="0">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title">交通</td>
+                    <td>
+                        <div class="inline-inputs">
+                            <input type="number" id="motorbike" placeholder="機車" min="0">
+                            <input type="number" id="bus" placeholder="巴士" min="0">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title">備註</td>
+                    <td><textarea id="notes" rows="4" cols="50"></textarea></td>
+                </tr>
+            </table>
+        </form>
+		<div class="text-center">
+		<button type="submit" onclick="submit2ticket()">提交</button>
+        <button id="close-form">關閉</button>
+		</div>
+    </div>
+
+</body>
+</html>
