@@ -3,7 +3,7 @@
 function submit2ticket() {
     // 取得表單資料
     const dateInput = document.getElementById('date').value;
-    const category = document.getElementById('category').value;
+    //const category = document.getElementById('category').value;
     const providerid = document.getElementById('provider').value;
     const tourid = document.getElementById('tour').value;
     const startHourInput = parseInt(document.getElementById('start-hour').value);
@@ -40,12 +40,6 @@ function submit2ticket() {
         const startMinute = parseInt(startMinuteInput, 10);
         const checkinTime = parseInt(checkinTimeInput, 10);
 
-        if (isNaN(startHour) || isNaN(startMinute) || isNaN(checkinTime)) {
-            // 如果任何輸入欄位的值無效或為空，則不顯示任何內容
-            ttime.innerText = '';
-            return;
-        }
-
         // 計算報到時間
         let checkinHour = startHour;
         let checkinMinute = startMinute - checkinTime;
@@ -56,13 +50,41 @@ function submit2ticket() {
             checkinMinute += 60;
         }
 
-        // 格式化時間顯示
+        // 載入業者詳細資料
+        let providerDetailsData = {};
+        fetch('./js/ProviderDetail.json')
+            .then(response => response.json())
+            .then(data => {
+            providerDetailsData = data[providerid];
+            // 顯示行程業者在票券上
+            tprovider.textContent = `${providerDetailsData[0]["業者"]} ${providerDetailsData[1]["電話"]}`;
+            // 顯示報到地點在票券上
+            checkinadd.innerHTML = `${providerDetailsData[2]["櫃台"]}<br>${providerDetailsData[3]["地址"]}`;
+            
+            
+            // 格式化時間顯示
         formattedCheckinTime = formatTime(checkinHour, checkinMinute);
         formattedStartTime = formatTime(startHour, startMinute);
 
-        // 報到/開始時間
-    ttime.textContent = `  ${formattedCheckinTime}報到 / ${formattedStartTime}開始`;
-    }
+        // 報到/開始時間 如果勾選前一天通知，則另外顯示別的文字
+        const waitInfoCheckbox = document.getElementById("wait-info");
+        // 根據 checkbox 狀態更新 ttime 顯示
+           if (waitInfoCheckbox.checked) {
+            ttime.innerHTML = "暫定08:00開船<br>出發前一日通知開船時間";
+            } else {
+               ttime.textContent = `${formattedCheckinTime}報到 / ${formattedStartTime} ${providerDetailsData[4]["開始方式"]}`;
+            }    
+        
+        //如果勾選不顯示，則不顯示時間文字，改以--代替
+         const noshowCheckbox = document.getElementById("no-show");
+        // 根據 checkbox 狀態更新 ttime 顯示
+           if (noshowCheckbox.checked) {
+            ttime.innerHTML = "--"; }  
+
+        })
+        .catch(error => console.error('Error loading categories:', error));
+           
+        }
     showTime();
 
 
@@ -70,15 +92,15 @@ function submit2ticket() {
         let message = "";
         let peopleCount = [];
         // 判斷是否有輸入大人數量，若有則加入
-        if (adults !== "") {
+        if (adults !== "" && adults !== "0") {
             peopleCount.push(`${adults}大`);
         }
         // 判斷是否有輸入小孩數量，若有則加入
-        if (children !== "") {
+        if (children !== "" && children !== "0") {
             peopleCount.push(`${children}小`);
         }
         // 判斷是否有輸入嬰兒數量，若有則加入
-        if (infants !== "") {
+        if (infants !== "" && infants !== "0") {
             peopleCount.push(`${infants}嬰`);
         }
         // 如果有有效的數量，組合顯示；否則不顯示
@@ -91,32 +113,32 @@ let message_activities = "";
 let peopleCount_activities = [];
 
 // 判斷是否有輸入浮潛數量，若有則加入
-if (snorkel !== "") {
+if (snorkel !== "" && snorkel !== "0") {
     peopleCount_activities.push(`浮潛${snorkel}位`);
 }
 
 // 判斷是否有輸入獨木舟數量，若有則加入
-if (canoe !== "") {
+if (canoe !== "" && canoe !== "0") {
     peopleCount_activities.push(`獨木舟${canoe}位`);
 }
 
 // 判斷是否有輸入自由行數量，若有則加入
-if (freestyle !== "") {
+if (freestyle !== "" && freestyle !== "0") {
     peopleCount_activities.push(`自由行${freestyle}位`);
 }
 
 // 判斷是否有輸入機車數量，若有則加入
-if (motorbike !== "") {
+if (motorbike !== "" && motorbike !== "0") {
     peopleCount_activities.push(`機車${motorbike}台`);
 }
 
 // 判斷是否有輸入巴士數量，若有則加入
-if (bus !== "") {
+if (bus !== "" && bus !== "0") {
     peopleCount_activities.push(`巴士${bus}位`);
 }
 
 // 判斷是否有輸入備註，若有則加入
-if (notes !== "") {
+if (notes !== "" && notes !== "0") {
     // 將文字中的換行符號 (\n) 替換成 <br>
     const formattedNotes = notes.replace(/\n/g, "<br>");
     peopleCount_activities.push(`${formattedNotes}`);
@@ -191,23 +213,6 @@ if (peopleCount_activities.length > 0) {
         };
 
         changeDate()
-        
-
-        // 載入業者詳細資料
-        let providerDetailsData = {};
-        fetch('./js/ProviderDetail.json')
-            .then(response => response.json())
-            .then(data => {
-            providerDetailsData = data[providerid];
-            // 顯示行程業者在票券上
-            tprovider.textContent = `${providerDetailsData[0]["業者"]} ${providerDetailsData[1]["電話"]}`;
-            // 顯示報到地點在票券上
-            checkinadd.innerHTML = `${providerDetailsData[2]["櫃台"]}<br>${providerDetailsData[3]["地址"]}`;
-        })
-        .catch(error => console.error('Error loading categories:', error));
-        
-        
-        
           
     //填入票券表格
     // 旅客/電話
@@ -221,11 +226,12 @@ if (peopleCount_activities.length > 0) {
     //const checkinadd.textContent = document.getElementById('checkin-add');
     // 備註
     ps.innerHTML = `${message_activities}`;
+        
+        //關閉表單和背景
+        document.getElementById('form-container').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
 
-    document.getElementById('form-container').style.display = 'none';
-    document.getElementById('overlay').style.display = 'none';
-     
-}
+} //submit2ticket 結束
 
 // 【自動改變票券顏色功能】
 // 顏色映射表
@@ -243,49 +249,69 @@ const colorMapping = {
     };
   
   // 取得 select 元素和表格元素
-  const category = document.getElementById("category");
+  const categoryarea = document.getElementById("category");
   const myTable = document.getElementById("myTable");
   
   // 綁定事件監聽器，當 select 的值改變時觸發
-  category.addEventListener("change", function () {
+  categoryarea.addEventListener("change", function () {
     // 根據 select 的值獲取對應的顏色
-    const selectedValue = category.value;
-    const selectedColor = colorMapping[selectedValue] || "#ffffff"; // 預設為白色
-    myTable.style.backgroundColor = selectedColor;
+    const selectedValue = categoryarea.value;
+    const selectedColor = colorMapping[selectedValue] || "#fffaaf"; // 預設為白色
+    myTable.style.backgroundColor = selectedColor; 
+       
   });
 
 // 【拖曳LOGO功能】
 // 取得圖片元素
 const logo = document.getElementById("logo");
 
-let isDragging = false; // 是否正在拖曳
-let offsetX = 0; // 滑鼠相對圖片的水平偏移量
-let offsetY = 0; // 滑鼠相對圖片的垂直偏移量
+let isDragging = false;
+let offsetX = 0;
+let offsetY = 0;
 
-// 按下滑鼠時開始拖曳
-logo.addEventListener("mousedown", (event) => {
+// 通用的拖曳開始事件處理
+function startDrag(event) {
   isDragging = true;
-  offsetX = event.clientX - logo.offsetLeft;
-  offsetY = event.clientY - logo.offsetTop;
-  logo.style.cursor = "grabbing"; // 拖曳時改變游標樣式
-});
+  const clientX = event.type === "mousedown" ? event.clientX : event.touches[0].clientX;
+  const clientY = event.type === "mousedown" ? event.clientY : event.touches[0].clientY;
 
-// 移動滑鼠時更新圖片位置
-document.addEventListener("mousemove", (event) => {
+  offsetX = clientX - logo.offsetLeft;
+  offsetY = clientY - logo.offsetTop;
+
+  logo.style.cursor = "grabbing";
+}
+
+// 通用的拖曳移動事件處理
+function dragMove(event) {
   if (isDragging) {
-    const newX = event.clientX - offsetX;
-    const newY = event.clientY - offsetY;
+    const clientX = event.type === "mousemove" ? event.clientX : event.touches[0].clientX;
+    const clientY = event.type === "mousemove" ? event.clientY : event.touches[0].clientY;
 
-    // 更新圖片位置
+    const newX = clientX - offsetX;
+    const newY = clientY - offsetY;
+
     logo.style.left = `${newX}px`;
     logo.style.top = `${newY}px`;
   }
-});
+}
 
-// 放開滑鼠時停止拖曳
-document.addEventListener("mouseup", () => {
+// 通用的拖曳結束事件處理
+function stopDrag() {
   if (isDragging) {
     isDragging = false;
-    logo.style.cursor = "grab"; // 停止拖曳時還原游標樣式
+    logo.style.cursor = "grab";
   }
-});
+}
+
+// 電腦事件
+logo.addEventListener("mousedown", startDrag);
+document.addEventListener("mousemove", dragMove);
+document.addEventListener("mouseup", stopDrag);
+
+// 手機事件
+logo.addEventListener("touchstart", startDrag);
+document.addEventListener("touchmove", dragMove);
+document.addEventListener("touchend", stopDrag);
+
+
+

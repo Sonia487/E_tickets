@@ -4,7 +4,7 @@ let tourData = {};
 let categories = [];
 
 // 1. 載入所有類別資料
-fetch('/js/Category.json')
+fetch('./js/category.json')
   .then(response => response.json())
   .then(data => {
     categories = data.categories;

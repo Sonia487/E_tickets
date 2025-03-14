@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	<title>E-ticket</title>
 	<!--Local加入CSS檔案，注意路徑寫法-->
 	<link rel="stylesheet" href="css\bootstrap.min.css">
@@ -15,13 +16,14 @@
     <script defer src="js/submit2ticket.js"></script>
     <script defer type="module" src="js/copy_pic.js"></script>
     <script defer src="js/dom-to-image.js"></script>
+    <script defer src="js/share_pic.js"></script>
 </head>
 
 <body>
 	
-	<div class="container px-4 bg-light">
+	<div class="bg-light">
 	<!--大標題 container網格容器 排版用包含(px,gx,p,col...)/-->
-		<h1 class="p-3 mb-2 bg-primary text-white text-center">澎湖之美旅行社</h1>
+		<h1 class="p-3 bg-primary text-white text-center">澎湖之美旅行社</h1>
 
 	<figure class="text-center">
   <blockquote class="blockquote">
@@ -34,11 +36,11 @@
 </figure>
 
 <div id="myTable">
-    <img id="logo" src="src\logo.png" alt="Logo">
-	<div class="container px-4 " style="width: 450px; font-family:DFKai-sb;">
-		<table class=" border-dark table-bordered table table-sm table-responsive-sm" style="background-color: #fcf98e; padding-top: 50%; scale: 1;">
+    <img id="logo" src="https://sonia487.github.io/src/Logo.png" alt="Logo">
+	<div class="" style="width: 450px; font-family:DFKai-sb;">
+		<table class=" border-dark table-bordered table table-sm table-responsive-sm" style="padding-top: 50%; scale: 1;">
 			<tr class="col">
-				<td class="border-2 text-center" colspan="2" style="font-size: large;">澎湖之美旅行社-電子票券</td>
+				<td class="border-2 text-center" colspan="2" style="font-size: large; font-weight: bold">澎湖之美旅行社-電子票券</td>
 			</tr>
 			<tr class="border-2 border-top-0 border-bottom-0">
                 <!--這個 style="width: 35%;" 可以調整直線位置-->
@@ -70,8 +72,8 @@
 </div>
 
 
-  		<div class="container px-6 text-center " style="width: 400px;">
-  		<div class="row justify-content-center gx-6">
+  		<div class="text-center">
+  		<div class="row">
     		<div class="col">
     			<div class="p-2">
       			<button type="button" class="btn btn-primary" id="copy_pic">複製圖片</button>
@@ -90,8 +92,8 @@
   		</div>
   		</div>
 
-  		<div class="container px-6 text-center " style="width: 400px;">
-  		<div class="row justify-content-center gx-6">
+  		<div class="text-center" >
+  		<div class="row">
     		<div class="col">
     			<div class="p-2">
       			<button type="button" class="btn btn-primary">歷史資料</button>
@@ -99,12 +101,12 @@
     		</div>
     		<div class="col">
     				<div class="p-2">
-      			<button type="button" class="btn btn-primary">批量製作</button>
+      			<button type="button" class="btn btn-primary" id="manufact">批量製作</button>
       			</div>
     		</div>
     		<div class="col">
     			<div class="p-2">
-      			<button type="button" class="btn btn-primary">還在想~</button>
+      			<button type="button" class="btn btn-primary">清空資料</button>
       			</div>
     		</div>
   		</div>
@@ -158,6 +160,8 @@
                         <div class="inline-inputs">
                             <input type="number" id="start-hour" min="0" max="23" placeholder="時"> :
                             <input type="number" id="start-minute" min="0" max="59" placeholder="分">
+                            <input type="checkbox" id="wait-info">出發前一天通知
+                            <input type="checkbox" id="no-show">不顯示
                         </div>
                     </td>
                 </tr>
@@ -213,6 +217,49 @@
         <button id="close-form">關閉</button>
 		</div>
     </div>
+
+    <svg width="450" height="290" xmlns="http://www.w3.org/2000/svg">
+        <!-- 背景 -->
+        <rect x="0" y="0" width="100%" height="100%" fill="#FFF8B3" stroke="black" stroke-width="2"/>
+    
+        <!-- 標題 -->
+        <text x="50%" y="34" font-size="18" font-family="Arial" font-weight="bold" text-anchor="middle">
+            澎湖之美旅行社-電子票券
+        </text>
+    
+        <!-- 表格線條 -->
+        <!-- 橫線 -->
+        <line x1="0" y1="50" x2="450" y2="50" stroke="black" />
+        <line x1="0" y1="90" x2="450" y2="90" stroke="black" />
+        <line x1="0" y1="130" x2="450" y2="130" stroke="black" />
+        <line x1="0" y1="170" x2="450" y2="170" stroke="black" />
+        <line x1="0" y1="210" x2="450" y2="210" stroke="black" />
+        <line x1="0" y1="250" x2="450" y2="250" stroke="black" />
+    
+        <!-- 直線 -->
+        <line x1="150" y1="50" x2="150" y2="290" stroke="black" />
+    
+        <!-- 表格文字 -->
+        <text x="10" y="75" font-size="14" font-family="Arial">旅客/電話</text>
+        <text x="10" y="115" font-size="14" font-family="Arial">日期/行程/人數</text>
+        <text x="10" y="155" font-size="14" font-family="Arial">報到/開始時間</text>
+        <text x="10" y="195" font-size="14" font-family="Arial">行程業者</text>
+        <text x="10" y="235" font-size="14" font-family="Arial">報到地點</text>
+        <text x="10" y="275" font-size="14" font-family="Arial">備註</text>
+    
+        <!-- 動態內容 (可替換) -->
+        <text x="160" y="75" font-size="14" font-family="Arial" id="customerInfo"></text>
+        <text x="160" y="115" font-size="14" font-family="Arial" id="scheduleInfo"></text>
+        <text x="160" y="155" font-size="14" font-family="Arial" id="timeInfo"></text>
+        <text x="160" y="195" font-size="14" font-family="Arial" id="operatorInfo"></text>
+        <text x="160" y="235" font-size="14" font-family="Arial" id="locationInfo"></text>
+        <text x="160" y="275" font-size="14" font-family="Arial" id="notesInfo"></text>
+    
+        <!-- 印章圖形 -->
+            <image href="https://sonia487.github.io/src/Logo.png" x="310" y="160" width="150" height="150"/>
+    </svg>
+    
+    
 
 </body>
 </html>

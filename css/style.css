@@ -109,6 +109,7 @@ textarea {
     height: auto; /* 自動調整高度 */
     overflow: visible; /* 確保不裁切內容 */
     position: relative; /* 確保子元素可以使用絕對定位 */
+    background-color: #fcf98e; /*背景色 寫在CSS檔才能透過JS修改*/
   }
   
   /* logo */
@@ -150,4 +151,11 @@ textarea {
     font-weight: bold; /* 加粗字體 */
     text-align: left; /* 文字居中對齊 */
   }
+
+  /*暫定開船時間文字*/
+  #info-text {
+    display: none; /* 初始隐藏 */
+    margin-left: 10px;
+    color: blue;
+}
   
