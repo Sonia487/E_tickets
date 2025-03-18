@@ -1,8 +1,8 @@
 // 要截圖的目標元素
 const targetElement = document.getElementById('myTable');
 
-// 設定生成圖片時的倍率（放大兩倍）
-const scale = 4;
+// 設定生成圖片時的倍率（放大4倍-table）(svg用1)
+const scale = 1;
 
 // 截圖並放入剪貼簿
 async function captureAndCopyToClipboard() {

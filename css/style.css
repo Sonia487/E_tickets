@@ -145,17 +145,16 @@ textarea {
     background-color: #f8f9fa;
   }
 
+  
   #time {
     font-size: 18px; /* 字體大小 */
-    color: blue; /* 字體顏色 */
+    fill: blue; /* 字體顏色 */
     font-weight: bold; /* 加粗字體 */
     text-align: left; /* 文字居中對齊 */
   }
-
-  /*暫定開船時間文字*/
-  #info-text {
-    display: none; /* 初始隐藏 */
-    margin-left: 10px;
-    color: blue;
-}
   
+
+svg {
+  border: 1px solid #ccc;
+  touch-action: none; /* 避免手機預設行為 */
+}

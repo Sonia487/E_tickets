@@ -59,8 +59,13 @@ function submit2ticket() {
             // 顯示行程業者在票券上
             tprovider.textContent = `${providerDetailsData[0]["業者"]} ${providerDetailsData[1]["電話"]}`;
             // 顯示報到地點在票券上
-            checkinadd.innerHTML = `${providerDetailsData[2]["櫃台"]}<br>${providerDetailsData[3]["地址"]}`;
-            
+            // 【Table版】
+            //checkinadd.innerHTML = `${providerDetailsData[2]["櫃台"]}<br>${providerDetailsData[3]["地址"]}`;
+            // 【SVG版】
+            checkinadd.innerHTML = `
+            <tspan x="160" y="235" font-size="17" font-family="DFKai-sb">${providerDetailsData[2]["櫃台"]}</tspan>
+            <tspan x="160" y="258" font-size="17" font-family="DFKai-sb">${providerDetailsData[3]["地址"]}</tspan>
+            `;
             
             // 格式化時間顯示
         formattedCheckinTime = formatTime(checkinHour, checkinMinute);
@@ -70,7 +75,11 @@ function submit2ticket() {
         const waitInfoCheckbox = document.getElementById("wait-info");
         // 根據 checkbox 狀態更新 ttime 顯示
            if (waitInfoCheckbox.checked) {
-            ttime.innerHTML = "暫定08:00開船<br>出發前一日通知開船時間";
+            ttime.innerHTML = `
+            <tspan x="160" y="155" font-size="17" font-family="DFKai-sb">暫定08:00開船</tspan>
+            <tspan x="160" y="180" font-size="17" font-family="DFKai-sb">出發前一日通知開船時間</tspan>
+            `
+            //ttime.innerHTML = "暫定08:00開船<br>出發前一日通知開船時間";
             } else {
                ttime.textContent = `${formattedCheckinTime}報到 / ${formattedStartTime} ${providerDetailsData[4]["開始方式"]}`;
             }    
@@ -108,75 +117,81 @@ function submit2ticket() {
             message = `${peopleCount.join("")}`;
         }
 
-// 顯示活動人數的函數
-let message_activities = "";
-let peopleCount_activities = [];
-
-// 判斷是否有輸入浮潛數量，若有則加入
-if (snorkel !== "" && snorkel !== "0") {
-    peopleCount_activities.push(`浮潛${snorkel}位`);
-}
-
-// 判斷是否有輸入獨木舟數量，若有則加入
-if (canoe !== "" && canoe !== "0") {
-    peopleCount_activities.push(`獨木舟${canoe}位`);
-}
-
-// 判斷是否有輸入自由行數量，若有則加入
-if (freestyle !== "" && freestyle !== "0") {
-    peopleCount_activities.push(`自由行${freestyle}位`);
-}
-
-// 判斷是否有輸入機車數量，若有則加入
-if (motorbike !== "" && motorbike !== "0") {
-    peopleCount_activities.push(`機車${motorbike}台`);
-}
-
-// 判斷是否有輸入巴士數量，若有則加入
-if (bus !== "" && bus !== "0") {
-    peopleCount_activities.push(`巴士${bus}位`);
-}
-
-// 判斷是否有輸入備註，若有則加入
-if (notes !== "" && notes !== "0") {
-    // 將文字中的換行符號 (\n) 替換成 <br>
-    const formattedNotes = notes.replace(/\n/g, "<br>");
-    peopleCount_activities.push(`${formattedNotes}`);
-}
-
-// 條件 1：當 tourid 的 value 是 S0103，且 motorbike 或 bus 有輸入數量時 【金八達-七望】
-if (tourid === "S0103" && (motorbike !== "" || bus !== "")) {
-    peopleCount_activities.push(
-        "望安-恆安車行 0933-305-664<br>七美-順天車行 0910-005-798"
-    );
-}
-
-// 條件 2：當 providerid 的 value 是 N01 或 N02，且 motorbike 有輸入數量時 【吉貝】
-if ((providerid === "N01" || provider === "N02") && motorbike !== "") {
-    peopleCount_activities.push("勇安租車 0977375500<br>吉貝碼頭取車");
-}
-
-// 條件 3：當 providerid 的 value 是 O04 時 【生活博物館】
-if (providerid === "O04") {
-    peopleCount_activities.push(
-        "領票證號：019-14-15<br>請至櫃枱報到取票，代表人請簽名"
-    );
-}
-
-// 條件 4：當 providerid 的 value 是 O01 時 【水族館】
-if (providerid === "O01") {
-    peopleCount_activities.push("請至售票窗口換取實體票後再行入館");
-}
-
-// 如果有有效的數量，組合顯示；否則不顯示
-if (peopleCount_activities.length > 0) {
-    message_activities = `${peopleCount_activities.join("<br>")}`;
-}
-
-
+        let message_activities = "";
+        let peopleCount_activities = [];
         
+        // 判斷是否有輸入浮潛數量，若有則加入
+        if (snorkel !== "" && snorkel !== "0") {
+            peopleCount_activities.push(`浮潛${snorkel}位`);
+        }
         
-
+        // 判斷是否有輸入獨木舟數量，若有則加入
+        if (canoe !== "" && canoe !== "0") {
+            peopleCount_activities.push(`獨木舟${canoe}位`);
+        }
+        
+        // 判斷是否有輸入自由行數量，若有則加入
+        if (freestyle !== "" && freestyle !== "0") {
+            peopleCount_activities.push(`自由行${freestyle}位`);
+        }
+        
+        // 判斷是否有輸入機車數量，若有則加入
+        if (motorbike !== "" && motorbike !== "0") {
+            peopleCount_activities.push(`機車${motorbike}台`);
+        }
+        
+        // 判斷是否有輸入巴士數量，若有則加入
+        if (bus !== "" && bus !== "0") {
+            peopleCount_activities.push(`巴士${bus}位`);
+        }
+        
+        // 條件 1：當 tourid 的 value 是 S0103，且 motorbike 或 bus 有輸入數量時 【金八達-七望】
+        if (tourid === "S0103" && (motorbike !== "" || bus !== "")) {
+            peopleCount_activities.push(
+                "望安-恆安車行 0933-305-664<br>七美-順天車行 0910-005-798"
+            );
+        }
+        
+        // 條件 2：當 providerid 的 value 是 N01 或 N02，且 motorbike 有輸入數量時 【吉貝】
+        if ((providerid === "N01" || provider === "N02") && motorbike !== "") {
+            peopleCount_activities.push("勇安租車 0977375500<br>吉貝碼頭取車");
+        }
+        
+        // 條件 3：當 providerid 的 value 是 O04 時 【生活博物館】
+        if (providerid === "O04") {
+            peopleCount_activities.push(
+                "領票證號：019-14-15<br>請至櫃枱報到取票，代表人請簽名"
+            );
+        }
+        
+        // 條件 4：當 providerid 的 value 是 O01 時 【水族館】
+        if (providerid === "O01") {
+            peopleCount_activities.push("請至售票窗口換取實體票後再行入館");
+        }
+        
+        // 如果有有效的數量，組合顯示；否則不顯示
+        if (peopleCount_activities.length > 0) {
+            message_activities = `${peopleCount_activities.join("<br>")}`;  // 使用 <br> 進行換行
+        }
+        
+        // 插入SVG文本元素
+           // 清空目前備註欄位ps的内容
+            ps.innerHTML = "";
+        
+            // 将message_activities中的每一行内容作为tspan插入
+            const lines = message_activities.split("<br>");
+            let yPosition = 275; // 初始y坐标
+            lines.forEach((line, index) => {
+                const tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+                tspan.setAttribute("x", "160");
+                tspan.setAttribute("y", yPosition);
+                tspan.setAttribute("font-size", "17");
+                tspan.setAttribute("font-family", "DFKai-sb");
+                tspan.textContent = line;
+                ps.appendChild(tspan);
+                yPosition += 23; // 每行之间的间隔
+            });
+            
         // 根據選擇的 tourid 顯示行程名稱
         function updateTourName() {
             // 查找 tourData 中對應的行程
@@ -225,11 +240,17 @@ if (peopleCount_activities.length > 0) {
     // 報到地點
     //const checkinadd.textContent = document.getElementById('checkin-add');
     // 備註
-    ps.innerHTML = `${message_activities}`;
+    //ps.innerHTML = `${message_activities}`;
         
         //關閉表單和背景
         document.getElementById('form-container').style.display = 'none';
         document.getElementById('overlay').style.display = 'none';
+
+        const tspans = document.querySelectorAll('tspan');
+        tspans.forEach(tspan => {
+          const bbox = tspan.getBBox();
+          console.log(`Tspan text: "${tspan.textContent}", Height: ${bbox.height}, Width: ${bbox.width}, X: ${bbox.x}, Y: ${bbox.y}`);
+        });
 
 } //submit2ticket 結束
 
@@ -250,26 +271,33 @@ const colorMapping = {
   
   // 取得 select 元素和表格元素
   const categoryarea = document.getElementById("category");
-  const myTable = document.getElementById("myTable");
+  //【表格ID】
+  //const myTable = document.getElementById("myTable");
+  //【SVG ID】
+  const myTable = document.getElementById("myTable-background");
+
   
   // 綁定事件監聽器，當 select 的值改變時觸發
   categoryarea.addEventListener("change", function () {
     // 根據 select 的值獲取對應的顏色
     const selectedValue = categoryarea.value;
     const selectedColor = colorMapping[selectedValue] || "#fffaaf"; // 預設為白色
-    myTable.style.backgroundColor = selectedColor; 
+    //【表格文法】
+    //myTable.style.backgroundColor = selectedColor; 
+    //【SVG 文法】
+    myTable.style.fill = selectedColor; 
        
   });
 
-// 【拖曳LOGO功能】
+// 【Table用的拖曳LOGO功能】
 // 取得圖片元素
-const logo = document.getElementById("logo");
+/*const logo = document.getElementById("logo");
 
 let isDragging = false;
 let offsetX = 0;
 let offsetY = 0;
 
-// 通用的拖曳開始事件處理
+// 通用的拖曳開始事件處理 table用
 function startDrag(event) {
   isDragging = true;
   const clientX = event.type === "mousedown" ? event.clientX : event.touches[0].clientX;
@@ -312,6 +340,45 @@ document.addEventListener("mouseup", stopDrag);
 logo.addEventListener("touchstart", startDrag);
 document.addEventListener("touchmove", dragMove);
 document.addEventListener("touchend", stopDrag);
+*/
 
 
+//【SVG用的印章拖曳功能】
+const logo = document.getElementById('logo');
+let isDragging = false;
+let offset = { x: 0, y: 0 };
 
+const getMousePosition = (e) => {
+  const svg = logo.ownerSVGElement;
+  const pt = svg.createSVGPoint();
+  pt.x = e.clientX || (e.touches && e.touches[0].clientX);
+  pt.y = e.clientY || (e.touches && e.touches[0].clientY);
+  return pt.matrixTransform(svg.getScreenCTM().inverse());
+};
+
+const startDrag = (e) => {
+  isDragging = true;
+  const pos = getMousePosition(e);
+  offset.x = pos.x - parseFloat(logo.getAttribute('x'));
+  offset.y = pos.y - parseFloat(logo.getAttribute('y'));
+};
+
+const drag = (e) => {
+  if (!isDragging) return;
+  e.preventDefault();
+  const pos = getMousePosition(e);
+  logo.setAttribute('x', pos.x - offset.x);
+  logo.setAttribute('y', pos.y - offset.y);
+};
+
+const endDrag = () => {
+  isDragging = false;
+};
+
+logo.addEventListener('mousedown', startDrag);
+window.addEventListener('mousemove', drag);
+window.addEventListener('mouseup', endDrag);
+
+logo.addEventListener('touchstart', startDrag);
+window.addEventListener('touchmove', drag);
+window.addEventListener('touchend', endDrag);
