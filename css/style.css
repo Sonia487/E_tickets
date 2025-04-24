@@ -157,7 +157,7 @@ textarea {
     border-bottom: 1px solid #ddd;
     width: 95%;
     margin: 0 auto;
-    padding: 5px 0;
+    padding: 0.1px 0;
   }
 
   #ticket-container {

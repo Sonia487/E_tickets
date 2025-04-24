@@ -233,42 +233,22 @@ if (peopleCount_activities.length > 0) {
 
 } //submit2ticket 結束
 
-// 【拖曳LOGO功能】
-// 取得圖片元素
-const logo = document.getElementById("logo");
-const myTable = document.getElementById("myTable");
 
-let isDragging = false;
-let offsetX = 0;
-let offsetY = 0;
-
-function startDrag(event) {
-  isDragging = true;
-  const clientX = event.type.includes("mouse") ? event.clientX : event.touches[0].clientX;
-  const clientY = event.type.includes("mouse") ? event.clientY : event.touches[0].clientY;
-
-  // 以myTable為參考點
-  const rect = myTable.getBoundingClientRect();
-  offsetX = clientX - (logo.offsetLeft + rect.left);
-  offsetY = clientY - (logo.offsetTop + rect.top);
-
-  logo.style.cursor = "grabbing";
-}
-
+// 通用的拖曳移動事件處理
 function dragMove(event) {
-  if (!isDragging) return;
+  if (isDragging) {
+    const clientX = event.type === "mousemove" ? event.clientX : event.touches[0].clientX;
+    const clientY = event.type === "mousemove" ? event.clientY : event.touches[0].clientY;
 
-  const clientX = event.type.includes("mouse") ? event.clientX : event.touches[0].clientX;
-  const clientY = event.type.includes("mouse") ? event.clientY : event.touches[0].clientY;
+    const newX = clientX - offsetX;
+    const newY = clientY - offsetY;
 
-  const rect = myTable.getBoundingClientRect();
-  const newX = clientX - rect.left - offsetX;
-  const newY = clientY - rect.top - offsetY;
-
-  logo.style.left = `${newX}px`;
-  logo.style.top = `${newY}px`;
+    logo.style.left = `${newX}px`;
+    logo.style.top = `${newY}px`;
+  }
 }
 
+// 通用的拖曳結束事件處理
 function stopDrag() {
   if (isDragging) {
     isDragging = false;
@@ -276,12 +256,12 @@ function stopDrag() {
   }
 }
 
-// 電腦
+// 電腦事件
 logo.addEventListener("mousedown", startDrag);
 document.addEventListener("mousemove", dragMove);
 document.addEventListener("mouseup", stopDrag);
 
-// 手機
+// 手機事件
 logo.addEventListener("touchstart", startDrag);
 document.addEventListener("touchmove", dragMove);
 document.addEventListener("touchend", stopDrag);
