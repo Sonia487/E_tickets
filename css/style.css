@@ -109,18 +109,8 @@ textarea {
     height: auto; /* 自動調整高度 */
     overflow: visible; /* 確保不裁切內容 */
     position: relative; /* 確保子元素可以使用絕對定位 */
-    background-color: #fcf98e; /*背景色 寫在CSS檔才能透過JS修改*/
-  }
-  
-  /* logo */
-  #logo {
-    position: absolute; /* 絕對定位，基於父容器 */
-    bottom: 15px; /* 距離表格底部 10px */
-    right: 18px; /* 距離表格右側 10px */
-    width: 100px; /* 設置圖片寬度 */
-    height: auto; /* 保持圖片比例 */
-    z-index: 10; /* 確保圖片顯示在最上層 */
-    scale: 1.5; /* 放大 1.5 倍 */
+    border-radius: 15px;
+    background-color: white;
   }
   
   .container {
@@ -132,6 +122,7 @@ textarea {
     margin: 0 !important; /* 去除表格外邊距 */
     padding: 0 !important; /* 去除表格內邊距 */
     border-collapse: collapse; /* 合併表格邊框 */
+    
     width: 100%; /* 讓表格填滿容器 */
     
   }
@@ -144,17 +135,53 @@ textarea {
     padding: 0;
     background-color: #f8f9fa;
   }
-
   
   #time {
     font-size: 18px; /* 字體大小 */
-    fill: blue; /* 字體顏色 */
+    color: blue; /* 字體顏色 */
     font-weight: bold; /* 加粗字體 */
     text-align: left; /* 文字居中對齊 */
   }
-  
 
-svg {
-  border: 1px solid #ccc;
-  touch-action: none; /* 避免手機預設行為 */
-}
+  #title {
+    font-size: 18px; /* 字體大小 */
+    color: rgb(0, 0, 0); /* 字體顏色 */
+    text-align: center; /* 文字居中對齊 */
+    background-color: #b1e9ff; /*背景色 寫在CSS檔才能透過JS修改*/
+  }
+
+  .tablecontent {
+    font-size: 16px; /* 字體大小 */
+    color: rgb(0, 0, 0); /* 字體顏色 */
+    text-align: left; /* 文字靠左對齊 */ 
+    border-bottom: 1px solid #ddd;
+    width: 95%;
+    margin: 0 auto;
+    padding: 5px 0;
+  }
+
+  #ticket-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .watermark {
+      position: absolute;
+      top: 94%;
+      left: 75%;
+      transform: translate(-50%, -50%) rotate(0);
+      font-size: 27px;
+      color: rgba(0, 0, 0, 0.1); /* 淡灰色半透明 */
+      white-space: nowrap;
+      pointer-events: none; /* 不干擾使用者互動 */
+      z-index: 10; /* 確保在內容之下，但可視 */
+      font-weight: bold;
+    }
+
+    .watermark-img {
+      width: 200px;
+      height: auto;
+      pointer-events: none;
+    }
+    

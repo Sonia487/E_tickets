@@ -17,13 +17,17 @@
     <script defer type="module" src="js/copy_pic.js"></script>
     <script defer src="js/dom-to-image.js"></script>
     <script defer src="js/share_pic.js"></script>
+    <!--解析excel的工具-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script defer type="module" src="js/batchProcess.js"></script>
 </head>
 
 <body>
 	
-	<div class="bg-light">
+	<div class="container px-4 bg-light">
 	<!--大標題 container網格容器 排版用包含(px,gx,p,col...)/-->
-		<h1 class="p-3 bg-primary text-white text-center">澎湖之美旅行社</h1>
+		<h1 class="p-3 mb-2 bg-primary text-white text-center">澎湖之美旅行社</h1>
 
 	<figure class="text-center">
   <blockquote class="blockquote">
@@ -34,86 +38,39 @@
     <button class="btn btn-lg btn-danger fw-bold" id="run">點這粒開始製作</button>
   </figcaption>
 </figure>
-<!--
-<div id="myTable">
-    <img id="logo" src="https://sonia487.github.io/src/Logo.png" alt="Logo">
-	<div class="" style="width: 450px; font-family:DFKai-sb;">
-		<table class=" border-dark table-bordered table table-sm table-responsive-sm" style="padding-top: 50%; scale: 1;">
-			<tr class="col">
-				<td class="border-2 text-center" colspan="2" style="font-size: large; font-weight: bold">澎湖之美旅行社-電子票券</td>
-			</tr>
-			<tr class="border-2 border-top-0 border-bottom-0">
-                <!--這個 style="width: 35%;" 可以調整直線位置--
-				<td class="border-1" style="width: 32%;">旅客/電話</td>
-				<td class="border-1" id="client"></td>
-			</tr>
-			<tr class="border-2 border-top-0 border-bottom-0">
-				<td class="border-1">日期/行程/人數</td>
-				<td class="border-1" id="tour-detail"></td>
-			</tr>
-			<tr class="border-2 border-top-0 border-bottom-0">
-				<td class="border-1">報到/開始時間</td>
-				<td class="border-1" id="time"></td>
-			</tr>
-			<tr class="border-2 border-top-0 border-bottom-0">
-				<td class="border-1">行程業者</td>
-				<td class="border-1" id="t-provider"></td>
-			</tr>
-			<tr class="border-2 border-top-0 border-bottom-0">
-				<td class="border-1">報到地點</td>
-				<td class="border-1" id="checkin-add"></td>
-			</tr>
-			<tr class="border-2 border-top-0">
-				<td class="border-1">備註</td>
-				<td class="border-1" style="flex: 1;" id="ps"></td>
-			</tr>
-		</table>
-	</div>
-</div>-->
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 290" preserveAspectRatio="xMidYMid meet" id="myTable">
-    <!-- 背景 -->
-    <rect x="0" y="0" width="450" height="290" fill="#FFF8B3" stroke="black" stroke-width="2" id="myTable-background"/>
+<div id="ticket-container" >
+    <div id="myTable" class="container px-4 " style="width: 250px; font-family: 'Noto Sans TC'; border-radius: 15px; overflow: hidden; border: none; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+      <table class="table table-sm table-borderless table-responsive-sm" style="width: 100%;">
+        <tr>
+          <td id="title" style="font-size: large;" class="text-center">行程報到電子票券</td>
+        </tr>
+  
+        <tr><td class="text-muted" style="font-size: 0.75rem;">旅客/電話</td></tr>
+        <tr><td><div class="tablecontent" id="client"></div></td></tr>
+  
+        <tr><td class="text-muted" style="font-size: 0.75rem;">日期/行程/人數</td></tr>
+        <tr><td><div class="tablecontent" id="tour-detail"></div></td></tr>
+  
+        <tr><td class="text-muted" style="font-size: 0.75rem;">報到/開始時間</td></tr>
+        <tr><td><div class="tablecontent" id="time"></div></td></tr>
+  
+        <tr><td class="text-muted" style="font-size: 0.75rem;">行程業者</td></tr>
+        <tr><td><div class="tablecontent" id="t-provider"></div></td></tr>
+  
+        <tr><td class="text-muted" style="font-size: 0.75rem;">報到地點</td></tr>
+        <tr><td><div class="tablecontent" id="checkin-add"></div></td></tr>
+          
+        <tr><td class="text-muted" style="font-size: 0.75rem;">備註</td></tr>
+        <tr><td><div class="tablecontent" id="ps"></div></td></tr>
+        <tr><td class="text-center"><img class="watermark-img" src="src/澎湖之美去背logo.png" alt="澎湖之美浮水印"></td></tr>
+      </table>
+    </div>
+  </div>
+  
 
-    <!-- 標題 -->
-    <text x="50%" y="32" font-size="20" font-family="DFKai-sb" font-weight="bold" text-anchor="middle">
-        澎湖之美旅行社-電子票券
-    </text>
-
-    <!-- 表格線條 -->
-    <!-- 橫線 -->
-    <line x1="0" y1="50" x2="450" y2="50" stroke="black" />
-    <line x1="0" y1="90" x2="450" y2="90" stroke="black" />
-    <line x1="0" y1="130" x2="450" y2="130" stroke="black" />
-    <line x1="0" y1="170" x2="450" y2="170" stroke="black" />
-    <line x1="0" y1="210" x2="450" y2="210" stroke="black" />
-    <line x1="0" y1="250" x2="450" y2="250" stroke="black" />
-
-    <!-- 直線 -->
-    <line x1="150" y1="50" x2="150" y2="290" stroke="black" />
-
-    <!-- 表格文字 -->
-    <text x="10" y="75" font-size="17" font-family="DFKai-sb">旅客/電話</text>
-    <text x="10" y="115" font-size="17" font-family="DFKai-sb">日期/行程/人數</text>
-    <text x="10" y="155" font-size="17" font-family="DFKai-sb">報到/開始時間</text>
-    <text x="10" y="195" font-size="17" font-family="DFKai-sb">行程業者</text>
-    <text x="10" y="235" font-size="17" font-family="DFKai-sb">報到地點</text>
-    <text x="10" y="275" font-size="17" font-family="DFKai-sb">備註</text>
-
-    <!-- 動態內容 (可替換) -->
-    <text x="160" y="75" font-size="17" font-family="DFKai-sb" id="client"></text>
-    <text x="160" y="115" font-size="17" font-family="DFKai-sb" id="tour-detail"></text>
-    <text x="160" y="155" font-size="17" font-family="DFKai-sb" id="time"></text>
-    <text x="160" y="195" font-size="17" font-family="DFKai-sb" id="t-provider"></text>
-    <text x="160" y="235" font-size="17" font-family="DFKai-sb" id="checkin-add"></text>
-    <text x="160" y="275" font-size="17" font-family="DFKai-sb" id="ps"></text>
-
-    <!-- 印章圖形 -->
-    <image href="https://sonia487.github.io/src/Logo.png" x="200" y="125" width="150" height="150" id="logo"/>
-</svg>
-
-  		<div class="text-center">
-  		<div class="row">
+  		<div class="container px-6 text-center " style="width: 400px;">
+  		<div class="row justify-content-center gx-6">
     		<div class="col">
     			<div class="p-2">
       			<button type="button" class="btn btn-primary" id="copy_pic">複製圖片</button>
@@ -132,22 +89,22 @@
   		</div>
   		</div>
 
-  		<div class="text-center" >
-  		<div class="row">
+  		<div class="container px-6 text-center " style="width: 400px;">
+  		<div class="row justify-content-center gx-6">
     		<div class="col">
     			<div class="p-2">
       			<button type="button" class="btn btn-primary">歷史資料</button>
       			</div>
     		</div>
     		<div class="col">
-    				<div class="p-2">
-      			<button type="button" class="btn btn-primary" id="manufact">批量製作</button>
+    			<div class="">
+      			<button type="button" class="btn btn-primary" id="batchGenerate">批量製作</br>(先選擇檔案)</button>
       			</div>
     		</div>
     		<div class="col">
-    			<div class="p-2">
-      			<button type="button" class="btn btn-primary">清空資料</button>
-      			</div>
+    			<div class="">
+                <input type="file" id="excelUpload" accept=".xlsx, .xls, .xlsm" class="w-100">
+            </div>
     		</div>
   		</div>
   		</div>
