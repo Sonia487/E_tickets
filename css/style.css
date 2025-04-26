@@ -136,13 +136,6 @@ textarea {
     background-color: #f8f9fa;
   }
   
-  #time {
-    font-size: 18px; /* 字體大小 */
-    color: blue; /* 字體顏色 */
-    font-weight: bold; /* 加粗字體 */
-    text-align: left; /* 文字居中對齊 */
-  }
-
   #title {
     font-size: 18px; /* 字體大小 */
     color: rgb(0, 0, 0); /* 字體顏色 */
@@ -157,7 +150,7 @@ textarea {
     border-bottom: 1px solid #ddd;
     width: 95%;
     margin: 0 auto;
-    padding: 0.1px 0;
+    padding: 0px 0;
   }
 
   #ticket-container {
@@ -183,5 +176,18 @@ textarea {
       width: 200px;
       height: auto;
       pointer-events: none;
+    }
+
+    #client {
+      color: rgb(140, 4, 213);
+      font-weight: bold; /* 加粗字體 */
+      font-size: 18px; /* 字體大小 */
+    }
+
+    #time {
+      font-size: 18px; /* 字體大小 */
+      color: rgb(0, 38, 255); /* 字體顏色 */
+      font-weight: bold; /* 加粗字體 */
+      text-align: left; /* 文字居中對齊 */
     }
     
