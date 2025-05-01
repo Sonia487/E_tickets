@@ -111,6 +111,8 @@ textarea {
     position: relative; /* 確保子元素可以使用絕對定位 */
     border-radius: 15px;
     background-color: white;
+    padding-top: 40px;
+    padding-bottom: 40px;
   }
   
   .container {
@@ -190,4 +192,3 @@ textarea {
       font-weight: bold; /* 加粗字體 */
       text-align: left; /* 文字居中對齊 */
     }
-    
