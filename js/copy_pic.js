@@ -60,7 +60,7 @@ function showToast(message, duration = 3000) {
       toast.style.display = 'none';
     }, 500);
   }, duration);
-};
+}
 
 // 桌機：使用 Clipboard API 複製圖片
 async function captureAndCopyToClipboard() {

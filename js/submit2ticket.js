@@ -257,14 +257,14 @@ function stopDrag() {
 }
 
 // 電腦事件
-logo.addEventListener("mousedown", startDrag);
-document.addEventListener("mousemove", dragMove);
-document.addEventListener("mouseup", stopDrag);
+// logo.addEventListener("mousedown", startDrag);
+// document.addEventListener("mousemove", dragMove);
+// document.addEventListener("mouseup", stopDrag);
 
 // 手機事件
-logo.addEventListener("touchstart", startDrag);
-document.addEventListener("touchmove", dragMove);
-document.addEventListener("touchend", stopDrag);
+// logo.addEventListener("touchstart", startDrag);
+// document.addEventListener("touchmove", dragMove);
+// document.addEventListener("touchend", stopDrag);
 
 
 
