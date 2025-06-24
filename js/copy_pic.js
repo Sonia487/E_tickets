@@ -74,7 +74,7 @@ async function captureAndCopyToClipboard() {
 
     const clipboardItem = new ClipboardItem({ 'image/png': blob });
     await navigator.clipboard.write([clipboardItem]);
-    alert('圖片已成功複製到剪貼簿！');
+    //alert('圖片已成功複製到剪貼簿！');
   } catch (error) {
     console.error('無法複製圖片到剪貼簿：', error);
     alert('此瀏覽器不支援複製圖片功能');
