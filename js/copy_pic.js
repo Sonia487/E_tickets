@@ -1,100 +1,123 @@
-// 要截圖的目標元素
 const targetElement = document.getElementById('myTable');
-
-// 設定生成圖片時的倍率（放大兩倍）
 const scale = 4;
 
-// 截圖並放入剪貼簿
-async function captureAndCopyToClipboard() {
+// 判斷是否為手機裝置（iOS 或 Android）
+function isMobile() {
+  return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+}
+
+// 行動裝置：顯示圖片供長按操作
+async function captureAndShowImage() {
   try {
-    // 取得目標元素的實際寬高
     const nodeWidth = targetElement.offsetWidth;
     const nodeHeight = targetElement.offsetHeight;
 
-    // 設定 dom-to-image 的選項
     const options = {
-      width: nodeWidth * scale, // 放大寬度
-      height: nodeHeight * scale, // 放大高度
+      width: nodeWidth * scale,
+      height: nodeHeight * scale,
       style: {
-        transform: `scale(${scale})`, // 縮放比例
-        transformOrigin: 'top left', // 縮放基準
-        width: `${nodeWidth}px`, // 原始寬度
-        height: `${nodeHeight}px`, // 原始高度
-        margin: 0, // 去除外邊距
-        padding: 0, // 去除內邊距
-        boxSizing: 'border-box' // 確保寬度計算包含邊框與內邊距
+        transform: `scale(${scale})`,
+        transformOrigin: 'top left',
+        width: `${nodeWidth}px`,
+        height: `${nodeHeight}px`,
+        margin: 0,
+        padding: 0,
+        boxSizing: 'border-box'
       },
-      quality: 1, // 確保最高品質
+      quality: 1,
     };
 
-    // 使用 dom-to-image 生成高解析度圖片 Blob
-    const blob = await domtoimage.toBlob(targetElement, options);
+    const dataUrl = await domtoimage.toPng(targetElement, options);
 
-    // 確保瀏覽器支援 Clipboard API
-    if (!navigator.clipboard || !window.ClipboardItem) {
-      throw new Error('Clipboard API 或 ClipboardItem 不受支援');
-    }
+    const img = new Image();
+    img.src = dataUrl;
+    img.style.maxWidth = '90%';
+    img.style.border = '1px solid #ccc';
+    img.style.marginTop = '10px';
 
-    // 將 Blob 包裝為 ClipboardItem
-    const clipboardItem = new ClipboardItem({ 'image/png': blob });
-
-    // 將圖片寫入剪貼簿
-    await navigator.clipboard.write([clipboardItem]);
-
-    //alert('圖片已成功複製到剪貼簿！');
+    const container = document.getElementById('preview');
+    container.style.display = 'block'; // ✅ 顯示出來
+    container.innerHTML = '<p>請長按圖片以複製或儲存：</p>';
+    container.appendChild(img);
   } catch (error) {
-    console.error('無法複製圖片到剪貼簿：', error);
+    console.error('無法生成圖片：', error);
   }
 }
 
-// 綁定按鈕點擊事件
-document.getElementById('copy_pic').addEventListener('click', captureAndCopyToClipboard);
+// 桌機：使用 Clipboard API 複製圖片
+async function captureAndCopyToClipboard() {
+  try {
+    const nodeWidth = targetElement.offsetWidth;
+    const nodeHeight = targetElement.offsetHeight;
 
+    const options = {
+      width: nodeWidth * scale,
+      height: nodeHeight * scale,
+      style: {
+        transform: `scale(${scale})`,
+        transformOrigin: 'top left',
+        width: `${nodeWidth}px`,
+        height: `${nodeHeight}px`,
+        margin: 0,
+        padding: 0,
+        boxSizing: 'border-box'
+      },
+      quality: 1,
+    };
 
+    const blob = await domtoimage.toBlob(targetElement, options);
 
-        // 監聽按鈕點擊事件
-        //下載圖片
-        document.getElementById('download_pic').addEventListener('click', function() {
-          // 目標區域
-          var node = document.getElementById('myTable');     
+    if (!navigator.clipboard || !window.ClipboardItem) {
+      throw new Error('Clipboard API 不支援');
+    }
 
-        // 設定生成圖片時的寬高
-        var nodeWidth = node.offsetWidth * 4; // 放大兩倍
-        var nodeHeight = node.offsetHeight * 4; // 放大兩倍
-      
-        // 等待縮放效果完成後再進行截圖
-        //id要放在div裡，不然會有放大錯誤
-      setTimeout(function() {
-        // 使用 dom-to-image 生成圖片，並設置更高的解析度（scale）
-        domtoimage.toPng(node, {
-          //設定canvas的長寬
-          width: nodeWidth,
-          height: nodeHeight,
-          //設定票券的比例
-          style: {
-              'transform': 'scale(4)',
-              'transform-origin': 'top left'
-          }
-      })
-          .then(function(dataUrl) {
-            // 創建一個圖片元素
-            var img = new Image();
-            img.src = dataUrl;
+    const clipboardItem = new ClipboardItem({ 'image/png': blob });
+    await navigator.clipboard.write([clipboardItem]);
+    alert('圖片已成功複製到剪貼簿！');
+  } catch (error) {
+    console.error('無法複製圖片到剪貼簿：', error);
+    alert('此瀏覽器不支援複製圖片功能');
+  }
+}
 
-            // 將圖片顯示在頁面上
-            //document.body.appendChild(img);
+// 綁定複製按鈕
+document.getElementById('copy_pic').addEventListener('click', () => {
+  if (isMobile()) {
+    captureAndShowImage();
+  } else {
+    captureAndCopyToClipboard();
+  }
+});
 
-            // 或者可以下載圖片，創建下載鏈接
-            var link = document.createElement('a');
-            link.download = 'myTable.png';
-            link.href = dataUrl;
-            link.click();
-          })
-          .catch(function(error) {
-            console.error('截圖失敗', error);
-          });
+// 綁定下載按鈕（所有裝置通用）
+document.getElementById('download_pic').addEventListener('click', function () {
+  if (isMobile()) {
+    captureAndShowImage(); // ✅ 行動裝置顯示預覽取代直接下載
+    return;
+  }
 
-        // 截圖後將 CSS scale 還原
-        node.style.transform = ''; // 還原縮放
-      }, 500); // 等待縮放過程（過渡效果）完成，這裡設置為 500 毫秒
+  // 電腦版正常下載流程
+  const node = document.getElementById('myTable');
+  const nodeWidth = node.offsetWidth * scale;
+  const nodeHeight = node.offsetHeight * scale;
+
+  setTimeout(function () {
+    domtoimage.toPng(node, {
+      width: nodeWidth,
+      height: nodeHeight,
+      style: {
+        transform: 'scale(4)',
+        transformOrigin: 'top left'
+      }
+    }).then(function (dataUrl) {
+      const link = document.createElement('a');
+      link.download = 'myTable.png';
+      link.href = dataUrl;
+      link.click();
+    }).catch(function (error) {
+      console.error('截圖失敗', error);
     });
+
+    node.style.transform = '';
+  }, 500);
+});
