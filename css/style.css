@@ -249,6 +249,5 @@ textarea {
   font-size: 14px;
   z-index: 9999;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  opacity: 0;
   transition: opacity 0.5s ease;
 }
