@@ -45,6 +45,23 @@ async function captureAndShowImage() {
   }
 }
 
+//提示訊息
+function showToast(message, duration = 3000) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.style.display = 'block';
+  setTimeout(() => {
+    toast.style.opacity = 1;
+  }, 10);
+
+  setTimeout(() => {
+    toast.style.opacity = 0;
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, 500);
+  }, duration);
+}
+
 // 桌機：使用 Clipboard API 複製圖片
 async function captureAndCopyToClipboard() {
   try {
