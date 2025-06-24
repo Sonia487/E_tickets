@@ -31,14 +31,15 @@ async function captureAndShowImage() {
 
     const img = new Image();
     img.src = dataUrl;
-    img.style.maxWidth = '90%';
-    img.style.border = '1px solid #ccc';
-    img.style.marginTop = '10px';
+    img.alt = "預覽圖片";
 
-    const container = document.getElementById('preview');
-    container.style.display = 'block'; // ✅ 顯示出來
-    container.innerHTML = '<p>請長按圖片以複製或儲存：</p>';
-    container.appendChild(img);
+    const overlay = document.getElementById('preview-overlay');
+    const content = document.getElementById('preview-content');
+
+    content.innerHTML = '<p>請長按圖片以複製或儲存：</p>';
+    content.appendChild(img);
+
+    overlay.style.display = 'flex';
   } catch (error) {
     console.error('無法生成圖片：', error);
   }
@@ -120,4 +121,8 @@ document.getElementById('download_pic').addEventListener('click', function () {
 
     node.style.transform = '';
   }, 500);
+});
+
+document.getElementById('close-preview').addEventListener('click', () => {
+  document.getElementById('preview-overlay').style.display = 'none';
 });

@@ -111,8 +111,15 @@
 
   	</div>	
 	
-    <!-- 預覽區：初始隱藏 -->
-    <div id="preview" style="display: none; text-align: center; margin-top: 10px;"></div>
+    <!-- ✅ 圖片預覽浮層，初始隱藏 -->
+    <div id="preview-overlay" style="display: none;">
+    <div id="preview-modal">
+        <button id="close-preview" aria-label="關閉預覽">❌</button>
+        <div id="preview-content">
+        <!-- 圖片會插入這裡 -->
+        </div>
+    </div>
+    </div>
 
 	<!-- 暗化背景，ID是overlay-->
 	<div id="overlay"></div>
