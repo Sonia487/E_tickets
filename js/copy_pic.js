@@ -9,6 +9,7 @@ function isMobile() {
 // 行動裝置：顯示圖片供長按操作
 async function captureAndShowImage() {
   try {
+    const targetElement = document.getElementById("myTable"); // ← 每次重新抓
     const nodeWidth = targetElement.offsetWidth;
     const nodeHeight = targetElement.offsetHeight;
 
