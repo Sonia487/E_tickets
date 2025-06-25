@@ -10,6 +10,7 @@ function isMobile() {
 async function captureAndShowImage() {
   try {
     const targetElement = document.getElementById("myTable"); // ← 每次重新抓
+    await new Promise(resolve => setTimeout(resolve, 100)); 
     const nodeWidth = targetElement.offsetWidth;
     const nodeHeight = targetElement.offsetHeight;
 
