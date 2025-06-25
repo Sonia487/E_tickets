@@ -65,6 +65,7 @@ function showToast(message, duration = 3000) {
 // 桌機：使用 Clipboard API 複製圖片
 async function captureAndCopyToClipboard() {
   try {
+    const targetElement = document.getElementById("myTable"); // ← 每次重新抓
     const nodeWidth = targetElement.offsetWidth;
     const nodeHeight = targetElement.offsetHeight;
 
@@ -82,7 +83,8 @@ async function captureAndCopyToClipboard() {
       },
       quality: 1,
     };
-
+    
+    await new Promise(resolve => requestAnimationFrame(resolve));
     const blob = await domtoimage.toBlob(targetElement, options);
 
     if (!navigator.clipboard || !window.ClipboardItem) {

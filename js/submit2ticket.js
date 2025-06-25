@@ -232,39 +232,3 @@ if (peopleCount_activities.length > 0) {
         document.getElementById('overlay').style.display = 'none';
 
 } //submit2ticket 結束
-
-
-// 通用的拖曳移動事件處理
-function dragMove(event) {
-  if (isDragging) {
-    const clientX = event.type === "mousemove" ? event.clientX : event.touches[0].clientX;
-    const clientY = event.type === "mousemove" ? event.clientY : event.touches[0].clientY;
-
-    const newX = clientX - offsetX;
-    const newY = clientY - offsetY;
-
-    logo.style.left = `${newX}px`;
-    logo.style.top = `${newY}px`;
-  }
-}
-
-// 通用的拖曳結束事件處理
-function stopDrag() {
-  if (isDragging) {
-    isDragging = false;
-    logo.style.cursor = "grab";
-  }
-}
-
-// 電腦事件
-// logo.addEventListener("mousedown", startDrag);
-// document.addEventListener("mousemove", dragMove);
-// document.addEventListener("mouseup", stopDrag);
-
-// 手機事件
-// logo.addEventListener("touchstart", startDrag);
-// document.addEventListener("touchmove", dragMove);
-// document.addEventListener("touchend", stopDrag);
-
-
-

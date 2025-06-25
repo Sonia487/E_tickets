@@ -6,8 +6,9 @@
 
 	<title>E-ticket</title>
 	<!--Local加入CSS檔案，注意路徑寫法-->
-	<link rel="stylesheet" href="css\bootstrap.min.css">
-	<link rel="stylesheet" href="css\style.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link id="theme-style" rel="stylesheet" href="css/newstyle.css">
+	<link rel="stylesheet" href="css/style-toggle.css">
 	<!--Local加入JS檔案，注意路徑寫法-->
 	<script defer src="js/javascript.js"></script>
 	<script defer src="js/html2canvas.js"></script>
@@ -39,34 +40,15 @@
   </figcaption>
 </figure>
 
-<div id="ticket-container" >
-    <div id="myTable" class="container px-4 " style="width: 250px; font-family: 'Noto Sans TC'; border-radius: 15px; overflow: hidden; border: none; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
-      <table class="table table-sm table-borderless table-responsive-sm" style="width: 100%;">
-        <tr>
-          <td id="title" style="font-size: large;" class="text-center">行程報到電子票券</td>
-        </tr>
-  
-        <tr><td class="text-muted" style="font-size: 0.75rem;">旅客/電話</td></tr>
-        <tr><td><div class="tablecontent" id="client"></div></td></tr>
-  
-        <tr><td class="text-muted" style="font-size: 0.75rem;">日期/行程/人數</td></tr>
-        <tr><td><div class="tablecontent" id="tour-detail"></div></td></tr>
-  
-        <tr><td class="text-muted" style="font-size: 0.75rem;">報到/開始時間</td></tr>
-        <tr><td><div class="tablecontent" id="time"></div></td></tr>
-  
-        <tr><td class="text-muted" style="font-size: 0.75rem;">行程業者</td></tr>
-        <tr><td><div class="tablecontent" id="t-provider"></div></td></tr>
-  
-        <tr><td class="text-muted" style="font-size: 0.75rem;">報到地點</td></tr>
-        <tr><td><div class="tablecontent" id="checkin-add"></div></td></tr>
-          
-        <tr><td class="text-muted" style="font-size: 0.75rem;">備註</td></tr>
-        <tr><td><div class="tablecontent" id="ps"></div></td></tr>
-        <tr><td class="text-center"><img class="watermark-img" src="src/澎湖之美去背logo.png" alt="澎湖之美浮水印"></td></tr>
-      </table>
-    </div>
+  <div class="controls">
+    <label class="toggle-wrapper">
+      <input type="checkbox" id="styleToggle">
+      <span class="toggle-slider"></span>
+    </label>
+    <span id="styleLabel">新版樣式</span>
   </div>
+
+  <div id="ticket-area"></div>
   
 
   		<div class="container px-6 text-center " style="width: 400px;">

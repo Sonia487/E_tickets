@@ -1,0 +1,51 @@
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+/* 滑動開關樣式 */
+.toggle-wrapper {
+  position: relative;
+  width: 60px;
+  height: 30px;
+  display: inline-block;
+}
+
+.toggle-wrapper input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 30px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 24px;
+  width: 24px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.toggle-wrapper input:checked + .toggle-slider {
+  background-color: #2196F3;
+}
+
+.toggle-wrapper input:checked + .toggle-slider:before {
+  transform: translateX(30px);
+}
