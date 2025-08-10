@@ -6,12 +6,33 @@ function isMobile() {
   return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 }
 
+//確保所有東西都渲染完成，尤其圖片
+async function waitForImagesLoaded(element) {
+  const imgElements = element.querySelectorAll('img');
+  const promises = [];
+  imgElements.forEach(img => {
+    if (!img.complete || img.naturalWidth === 0) {
+      promises.push(new Promise(resolve => {
+        img.onload = resolve;
+        img.onerror = resolve;
+      }));
+    }
+  });
+  return Promise.all(promises);
+}
+
 // 行動裝置：顯示圖片供長按操作
 async function captureAndShowImage() {
   try {
     // ✅ 預覽前隱藏浮動按鈕 & 功能按鈕
     document.getElementById('floating-buttons').style.display = 'none';
     document.getElementById('side-buttons').style.display = 'none';
+
+    // 等待所有圖片載入完成
+    await waitForImagesLoaded(targetElement);
+
+    // 再額外等一幀確保繪製完成
+    await new Promise(resolve => requestAnimationFrame(resolve));
 
     const targetElement = document.getElementById("myTable"); // ← 每次重新抓
     await new Promise(resolve => setTimeout(resolve, 100)); 
