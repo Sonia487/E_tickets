@@ -230,5 +230,7 @@ if (peopleCount_activities.length > 0) {
         //關閉表單和背景
         document.getElementById('form-container').style.display = 'none';
         document.getElementById('overlay').style.display = 'none';
-
+        // ✅ 隱藏右下角按鈕
+        document.getElementById('floating-buttons').style.display = 'none';
+        document.getElementById('side-buttons').style.display = 'flex';
 } //submit2ticket 結束

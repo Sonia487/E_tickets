@@ -50,8 +50,14 @@
 
   <div id="ticket-area"></div>
   
+        <!-- 功能按鈕浮動在右側 -->
+        <div id="side-buttons">
+            <button class="btn btn-primary" id="copy_pic">複製</button>
+            <button class="btn btn-primary" id="download_pic">下載</button>
+            <button class="btn btn-primary" id="share_pic">分享</button>
+        </div>
 
-  		<div class="container px-6 text-center " style="width: 400px;">
+ <!--    <div class="container px-6 text-center " style="width: 400px;">
   		<div class="row justify-content-center gx-6">
     		<div class="col">
     			<div class="p-2">
@@ -70,7 +76,7 @@
     		</div>
   		</div>
   		</div>
-
+-->	
   		<div class="container px-6 text-center " style="width: 400px;">
   		<div class="row justify-content-center gx-6">
     		<div class="col">
@@ -79,8 +85,8 @@
       			</div>
     		</div>
     		<div class="col">
-    			<div class="">
-      			<button type="button" class="btn btn-primary" id="batchGenerate">批量製作</br>(先選擇檔案)</button>
+    			<div class="p-2">
+      			<button type="button" class="btn btn-primary" id="batchGenerate">批量製作</br>(先選檔案)</button>
       			</div>
     		</div>
     		<div class="col">
@@ -92,7 +98,7 @@
   		</div>
 
   	</div>	
-	
+
     <!-- ✅ 圖片預覽浮層，初始隱藏 -->
     <div id="preview-overlay" style="display: none;">
     <div id="preview-modal">
@@ -199,11 +205,12 @@
                 </tr>
             </table>
         </form>
-		<div class="text-center">
-		<button type="submit" onclick="submit2ticket()">提交</button>
-        <button id="close-form">關閉</button>
-		</div>
+		<!-- 按鈕從表單中移除，改為固定在畫面右下 -->
     </div>
-
+    <!-- 固定在畫面右下的提交 + 關閉按鈕 -->
+    <div id="floating-buttons">
+        <button class="btn btn-success" onclick="submit2ticket()">提交</button>
+        <button class="btn btn-secondary" id="close-form">關閉</button>
+    </div>
 </body>
 </html>
