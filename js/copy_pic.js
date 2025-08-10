@@ -1,5 +1,5 @@
 const targetElement = document.getElementById('myTable');
-const scale = 4;
+const scale = 2;
 
 // 判斷是否為手機裝置（iOS 或 Android）
 function isMobile() {
