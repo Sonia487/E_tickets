@@ -6,7 +6,7 @@ function isMobile() {
   return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 }
 
-//確保所有東西都渲染完成，尤其圖片
+//等待圖片載入的工具函式
 async function waitForImagesLoaded(element) {
   const imgElements = element.querySelectorAll('img');
   const promises = [];
@@ -21,6 +21,7 @@ async function waitForImagesLoaded(element) {
   return Promise.all(promises);
 }
 
+
 // 行動裝置：顯示圖片供長按操作
 async function captureAndShowImage() {
   try {
@@ -28,14 +29,9 @@ async function captureAndShowImage() {
     document.getElementById('floating-buttons').style.display = 'none';
     document.getElementById('side-buttons').style.display = 'none';
 
-    // 等待所有圖片載入完成
-    await waitForImagesLoaded(targetElement);
-
-    // 再額外等一幀確保繪製完成
-    await new Promise(resolve => requestAnimationFrame(resolve));
-
     const targetElement = document.getElementById("myTable"); // ← 每次重新抓
-    await new Promise(resolve => setTimeout(resolve, 100)); 
+    await waitForImagesLoaded(targetElement);
+    await new Promise(resolve => requestAnimationFrame(resolve)); // 渲染穩定
     const nodeWidth = targetElement.offsetWidth;
     const nodeHeight = targetElement.offsetHeight;
 
@@ -93,6 +89,9 @@ function showToast(message, duration = 3000) {
 async function captureAndCopyToClipboard() {
   try {
     const targetElement = document.getElementById("myTable"); // ← 每次重新抓
+    await waitForImagesLoaded(targetElement);
+    await new Promise(resolve => requestAnimationFrame(resolve)); // 渲染穩定
+    
     const nodeWidth = targetElement.offsetWidth;
     const nodeHeight = targetElement.offsetHeight;
 
