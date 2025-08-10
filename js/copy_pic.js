@@ -28,10 +28,11 @@ async function captureAndShowImage() {
     // ✅ 預覽前隱藏浮動按鈕 & 功能按鈕
     document.getElementById('floating-buttons').style.display = 'none';
     document.getElementById('side-buttons').style.display = 'none';
-
+    showLoading()
     const targetElement = document.getElementById("myTable"); // ← 每次重新抓
     await waitForImagesLoaded(targetElement);
     await new Promise(resolve => requestAnimationFrame(resolve)); // 渲染穩定
+    hideLoading()
     const nodeWidth = targetElement.offsetWidth;
     const nodeHeight = targetElement.offsetHeight;
 
@@ -66,6 +67,7 @@ async function captureAndShowImage() {
   } catch (error) {
     console.error('無法生成圖片：', error);
   }
+
 }
 
 //提示訊息
@@ -83,6 +85,19 @@ function showToast(message, duration = 3000) {
       toast.style.display = 'none';
     }, 500);
   }, duration);
+}
+
+function showLoading(message = '生成圖片中...') {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.style.display = 'block';
+  toast.style.opacity = 1;
+}
+
+function hideLoading() {
+  const toast = document.getElementById('toast');
+  toast.style.opacity = 0;
+  setTimeout(() => { toast.style.display = 'none'; }, 300);
 }
 
 // 桌機：使用 Clipboard API 複製圖片
