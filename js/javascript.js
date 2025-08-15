@@ -61,8 +61,9 @@ const templates = {
           
         <tr><td class="text-muted" style="font-size: 0.75rem;">備註</td></tr>
         <tr><td><div class="tablecontent" id="ps"></div></td></tr>
-        <tr><td class="text-center"><img class="watermark-img" src="src/澎湖之美去背logo.png" alt="澎湖之美浮水印"></td></tr>
-      </table>
+        <tr><td class="text-center"><img class="watermark-img" src="src/澎湖之美去背logo.png" alt="澎湖之美浮水印"></td></tr> 
+        <tr tr id="company-phone-row" style="display: none;"><td class="text-center" style="font-size: 0.65rem; color: #555555ff;">★服務專線：06-9269071&nbsp&nbsp;★LINE ID：@3366kk</td></tr>        
+        </table>
     </div>
   </div>
   `,
@@ -236,4 +237,8 @@ toggle.addEventListener('change', function () {
   switchTo(this.checked ? 'old' : 'new');
 });
 
-
+//顯示公司電話事件
+document.getElementById('show-company-phone').addEventListener('change', function() {
+  const phoneRow = document.getElementById('company-phone-row');
+  phoneRow.style.display = this.checked ? 'table-row' : 'none';
+});
