@@ -1,5 +1,5 @@
 const targetElement = document.getElementById('myTable');
-const scale = 2;
+const scale = 4;
 
 // 判斷 iOS / Android
 function isIOS() {
