@@ -233,4 +233,5 @@ if (peopleCount_activities.length > 0) {
         // ✅ 隱藏右下角按鈕
         document.getElementById('floating-buttons').style.display = 'none';
         document.getElementById('side-buttons').style.display = 'flex';
+            
 } //submit2ticket 結束

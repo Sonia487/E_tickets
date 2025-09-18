@@ -1,10 +1,14 @@
 const targetElement = document.getElementById('myTable');
-const scale = 4;
+const scale = 2;
 
-// 判斷是否為手機裝置（iOS 或 Android）
-function isMobile() {
-  return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+// 判斷 iOS / Android
+function isIOS() {
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
+function isAndroid() {
+  return /Android/i.test(navigator.userAgent);
+}
+
 
 //等待圖片載入的工具函式
 async function waitForImagesLoaded(element) {
@@ -21,18 +25,18 @@ async function waitForImagesLoaded(element) {
   return Promise.all(promises);
 }
 
-
-// 行動裝置：顯示圖片供長按操作
+// iOS 專用：生成圖片 → 長按複製
 async function captureAndShowImage() {
   try {
-    // ✅ 預覽前隱藏浮動按鈕 & 功能按鈕
     document.getElementById('floating-buttons').style.display = 'none';
     document.getElementById('side-buttons').style.display = 'none';
-    showLoading()
-    const targetElement = document.getElementById("myTable"); // ← 每次重新抓
+    showLoading();
+
+    const targetElement = document.getElementById("myTable");
     await waitForImagesLoaded(targetElement);
-    await new Promise(resolve => requestAnimationFrame(resolve)); // 渲染穩定
-    hideLoading()
+    await new Promise(resolve => requestAnimationFrame(resolve));
+    hideLoading();
+
     const nodeWidth = targetElement.offsetWidth;
     const nodeHeight = targetElement.offsetHeight;
 
@@ -67,8 +71,111 @@ async function captureAndShowImage() {
   } catch (error) {
     console.error('無法生成圖片：', error);
   }
-
 }
+
+// Android / 桌機：直接複製圖片
+async function captureAndCopyToClipboard() {
+  try {
+    const targetElement = document.getElementById("myTable");
+    await waitForImagesLoaded(targetElement);
+    await new Promise(resolve => requestAnimationFrame(resolve));
+    
+    const nodeWidth = targetElement.offsetWidth;
+    const nodeHeight = targetElement.offsetHeight;
+
+    const options = {
+      width: nodeWidth * scale,
+      height: nodeHeight * scale,
+      style: {
+        transform: `scale(${scale})`,
+        transformOrigin: 'top left',
+        width: `${nodeWidth}px`,
+        height: `${nodeHeight}px`,
+        margin: 0,
+        padding: 0,
+        boxSizing: 'border-box'
+      },
+      quality: 1,
+    };
+    
+    const blob = await domtoimage.toBlob(targetElement, options);
+
+    if (!navigator.clipboard || !window.ClipboardItem) {
+      throw new Error('Clipboard API 不支援');
+    }
+
+    const clipboardItem = new ClipboardItem({ 'image/png': blob });
+    await navigator.clipboard.write([clipboardItem]);
+    showToast('圖片已成功複製到剪貼簿！');
+  } catch (error) {
+    console.error('無法複製圖片到剪貼簿：', error);
+    showToast('此瀏覽器不支援複製圖片功能');
+    throw error;
+  }
+}
+
+// 綁定複製按鈕
+document.getElementById('copy_pic').addEventListener('click', async () => {
+  if (isIOS()) {
+    captureAndShowImage();
+  } else if (isAndroid()) {
+    try {
+      if (!navigator.clipboard || !window.ClipboardItem) {
+        throw new Error("Clipboard API 不支援");
+      }
+      await captureAndCopyToClipboard();
+    } catch (err) {
+      console.warn("Android 複製失敗，改用圖片長按方式", err);
+      captureAndShowImage();
+    }
+  } else {
+    captureAndCopyToClipboard();
+  }
+});
+
+// 綁定下載按鈕
+document.getElementById('download_pic').addEventListener('click', async function () {
+  if (isIOS()) {
+    captureAndShowImage();
+    return;
+  }
+
+  const node = document.getElementById('myTable');
+  const nodeWidth = node.offsetWidth * scale;
+  const nodeHeight = node.offsetHeight * scale;
+
+  try {
+    const dataUrl = await domtoimage.toPng(node, {
+      width: nodeWidth,
+      height: nodeHeight,
+      style: {
+        transform: 'scale(4)',
+        transformOrigin: 'top left'
+      }
+    });
+
+    const link = document.createElement('a');
+    if ('download' in link) {
+      // ✅ 支援 a.download → 直接下載
+      link.download = 'myTable.png';
+      link.href = dataUrl;
+      link.click();
+    } else {
+      throw new Error("不支援 a.download");
+    }
+  } catch (err) {
+    console.warn("下載失敗，改用圖片長按方式", err);
+    captureAndShowImage(); // fallback
+  }
+});
+
+// 關閉預覽
+document.getElementById('close-preview').addEventListener('click', () => {
+  document.getElementById('preview-overlay').style.display = 'none';
+  document.getElementById('floating-buttons').style.display = 'none';
+  document.getElementById('side-buttons').style.display = 'flex';
+});
+
 
 //提示訊息
 function showToast(message, duration = 3000) {
@@ -99,96 +206,3 @@ function hideLoading() {
   toast.style.opacity = 0;
   setTimeout(() => { toast.style.display = 'none'; }, 300);
 }
-
-// 桌機：使用 Clipboard API 複製圖片
-async function captureAndCopyToClipboard() {
-  try {
-    const targetElement = document.getElementById("myTable"); // ← 每次重新抓
-    await waitForImagesLoaded(targetElement);
-    await new Promise(resolve => requestAnimationFrame(resolve)); // 渲染穩定
-    
-    const nodeWidth = targetElement.offsetWidth;
-    const nodeHeight = targetElement.offsetHeight;
-
-    const options = {
-      width: nodeWidth * scale,
-      height: nodeHeight * scale,
-      style: {
-        transform: `scale(${scale})`,
-        transformOrigin: 'top left',
-        width: `${nodeWidth}px`,
-        height: `${nodeHeight}px`,
-        margin: 0,
-        padding: 0,
-        boxSizing: 'border-box'
-      },
-      quality: 1,
-    };
-    
-    await new Promise(resolve => requestAnimationFrame(resolve));
-    const blob = await domtoimage.toBlob(targetElement, options);
-
-    if (!navigator.clipboard || !window.ClipboardItem) {
-      throw new Error('Clipboard API 不支援');
-    }
-
-    const clipboardItem = new ClipboardItem({ 'image/png': blob });
-    await navigator.clipboard.write([clipboardItem]);
-    //alert('圖片已成功複製到剪貼簿！');
-    showToast('圖片已成功複製到剪貼簿！');
-  } catch (error) {
-    console.error('無法複製圖片到剪貼簿：', error);
-    //alert('此瀏覽器不支援複製圖片功能');
-    showToast('此瀏覽器不支援複製圖片功能');
-  }
-}
-
-// 綁定複製按鈕
-document.getElementById('copy_pic').addEventListener('click', () => {
-  if (isMobile()) {
-    captureAndShowImage();
-  } else {
-    captureAndCopyToClipboard();
-  }
-});
-
-// 綁定下載按鈕（所有裝置通用）
-document.getElementById('download_pic').addEventListener('click', function () {
-  if (isMobile()) {
-    captureAndShowImage(); // ✅ 行動裝置顯示預覽取代直接下載
-    return;
-  }
-
-  // 電腦版正常下載流程
-  const node = document.getElementById('myTable');
-  const nodeWidth = node.offsetWidth * scale;
-  const nodeHeight = node.offsetHeight * scale;
-
-  setTimeout(function () {
-    domtoimage.toPng(node, {
-      width: nodeWidth,
-      height: nodeHeight,
-      style: {
-        transform: 'scale(4)',
-        transformOrigin: 'top left'
-      }
-    }).then(function (dataUrl) {
-      const link = document.createElement('a');
-      link.download = 'myTable.png';
-      link.href = dataUrl;
-      link.click();
-    }).catch(function (error) {
-      console.error('截圖失敗', error);
-    });
-
-    node.style.transform = '';
-  }, 500);
-});
-
-document.getElementById('close-preview').addEventListener('click', () => {
-  document.getElementById('preview-overlay').style.display = 'none';
-
-    // ✅ 關閉預覽後恢復浮動按鈕 & 功能按鈕
-  document.getElementById('floating-buttons').style.display = 'none';
-  document.getElementById('side-buttons').style.display = 'flex';
-});
