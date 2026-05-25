@@ -147,7 +147,7 @@ if (tourid === "S0103" && (motorbike !== "" || bus !== "")) {
 
 // 條件 2：當 providerid 的 value 是 N01 或 N02，且 motorbike 有輸入數量時 【吉貝】
 if ((providerid === "N01" || providerid === "N02") && motorbike !== "") {
-    peopleCount_activities.push("吉貝車行-勇安 0977375500<br>(吉貝碼頭取車)");
+    peopleCount_activities.push("吉貝車行-勇安 0977375500<br>(吉貝港口邊取車)");
 }
 
 // 條件 3：當 providerid 的 value 是 O04 時 【生活博物館】
