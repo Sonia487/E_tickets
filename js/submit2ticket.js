@@ -147,7 +147,7 @@ if (tourid === "S0103" && (motorbike !== "" || bus !== "")) {
 
 // 條件 2：當 providerid 的 value 是 N01 或 N02，且 motorbike 有輸入數量時 【吉貝】
 if ((providerid === "N01" || providerid === "N02") && motorbike !== "") {
-    peopleCount_activities.push("吉貝車行-勇安 0977375500(吉貝碼頭邊)");
+    peopleCount_activities.push("吉貝車行-勇安 0977375500<br>(吉貝碼頭取車)");
 }
 
 // 條件 3：當 providerid 的 value 是 O04 時 【生活博物館】
@@ -162,16 +162,16 @@ if (providerid === "O01") {
     peopleCount_activities.push("請至售票窗口換取實體票後再行入館");
 }
 
-// 如果有有效的數量，組合顯示；否則不顯示
-if (peopleCount_activities.length > 0) {
-    message_activities = `${peopleCount_activities.join("<br>")}`;
-}
-
 // 判斷是否有輸入備註，若有則加入
 if (notes !== "" && notes !== "0") {
     // 將文字中的換行符號 (\n) 替換成 <br>
     const formattedNotes = notes.replace(/\n/g, "<br>");
     peopleCount_activities.push(`${formattedNotes}`);
+}
+
+// 如果有有效的數量，組合顯示；否則不顯示
+if (peopleCount_activities.length > 0) {
+    message_activities = `${peopleCount_activities.join("<br>")}`;
 }
 
         
