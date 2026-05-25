@@ -137,13 +137,6 @@ if (bus !== "" && bus !== "0") {
     peopleCount_activities.push(`巴士${bus}位`);
 }
 
-// 判斷是否有輸入備註，若有則加入
-if (notes !== "" && notes !== "0") {
-    // 將文字中的換行符號 (\n) 替換成 <br>
-    const formattedNotes = notes.replace(/\n/g, "<br>");
-    peopleCount_activities.push(`${formattedNotes}`);
-}
-
 // 條件 1：當 tourid 的 value 是 S0103，且 motorbike 或 bus 有輸入數量時 【金八達-七望】
 if (tourid === "S0103" && (motorbike !== "" || bus !== "")) {
     peopleCount_activities.push(
@@ -153,7 +146,7 @@ if (tourid === "S0103" && (motorbike !== "" || bus !== "")) {
 
 // 條件 2：當 providerid 的 value 是 N01 或 N02，且 motorbike 有輸入數量時 【吉貝】
 if ((providerid === "N01" || providerid === "N02") && motorbike !== "") {
-    peopleCount_activities.push("吉貝車行-勇安 0977375500<br>(吉貝碼頭取車)");
+    peopleCount_activities.push("吉貝車行-勇安 0977375500<br>(吉貝港口邊取車)");
 }
 
 // 條件 3：當 providerid 的 value 是 O04 時 【生活博物館】
@@ -166,6 +159,13 @@ if (providerid === "O04") {
 // 條件 4：當 providerid 的 value 是 O01 時 【水族館】
 if (providerid === "O01") {
     peopleCount_activities.push("請至售票窗口換取實體票後再行入館");
+}
+
+// 判斷是否有輸入備註，若有則加入
+if (notes !== "" && notes !== "0") {
+    // 將文字中的換行符號 (\n) 替換成 <br>
+    const formattedNotes = notes.replace(/\n/g, "<br>");
+    peopleCount_activities.push(`${formattedNotes}`);
 }
 
 // 如果有有效的數量，組合顯示；否則不顯示
