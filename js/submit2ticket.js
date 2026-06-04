@@ -161,8 +161,8 @@ if (providerid === "O01") {
     peopleCount_activities.push("請至售票窗口換取實體票後再行入館");
 }
 
-// 條件 5：當 tourid 的 value 是 Far0103時 添加註解
-if (tourid === "Far0103") {
+// 條件 5：當 tourid 的 value 是 Far0103(夕遊)或Far0106(夕遊花火)時 添加註解
+if (tourid === "Far0103" || tourid === "Far0106") {
     peopleCount_activities.push(
         "【需攜帶身份證或健保卡】"
     );
