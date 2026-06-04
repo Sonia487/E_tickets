@@ -161,6 +161,14 @@ if (providerid === "O01") {
     peopleCount_activities.push("請至售票窗口換取實體票後再行入館");
 }
 
+// 條件 5：當 tourid 的 value 是 Far0103時 添加註解
+if (tourid === "Far0103") {
+    peopleCount_activities.push(
+        "【需攜帶身份證或健保卡】"
+    );
+}
+
+
 // 判斷是否有輸入備註，若有則加入
 if (notes !== "" && notes !== "0") {
     // 將文字中的換行符號 (\n) 替換成 <br>
